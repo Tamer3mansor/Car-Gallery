@@ -1,0 +1,255 @@
+#include<iostream>
+#define int long long
+using namespace std;
+class car_insert//to insert a car
+{
+protected:
+    string type;//car type
+    int id;//car id
+    double price;//car price
+public:
+    static int counter1;
+    static int counter2;
+    static double scash;
+    car_insert()//constructor
+    {
+        type =" ";
+        id = 0;
+        price = 0.0;
+        counter1++;
+
+    }
+    void set_car(string type, int id, double price)
+    {
+        this->type = type;
+        this->id = id;
+        this->price = price;
+        scash -= price;
+
+    }
+    int get_id()
+    {
+        return id;
+    }
+
+
+};
+class sold_car :car_insert//when you sell a car
+{
+public:
+    sold_car()//constructor
+    {
+        counter2++;
+        counter1--;
+    }
+    void set_id(int id)
+    {
+        this->id = id;
+    }
+    void set_price(double price)
+    {
+        this->price = price;
+        scash += price;
+    }
+};
+class show_data: car_insert
+{
+protected:
+   long double budget;
+    int cars;
+public:
+    show_data()
+    {
+
+        counter1--;
+    }
+    void set_data()
+    {
+        int c;
+        long double m;
+        cout << "******  Enter already owned cars number and budget  ******"<<endl;
+
+        cout<<"Number of cars : ";
+        cin>>c;
+        cout<<"budget : ";
+        cin>>m;
+        budget=m;
+        cars=c;
+    }
+    void get_car()
+    {
+
+        cout<<"\t Today's new cars number : "<<counter1<<endl;
+        cout<<" \n\t Today's sold cars number : "<<counter2<<endl;
+        cout<<"\n\t Total cars number :  "<<(cars+counter1)-counter2<<endl;
+
+    }
+    void get_cash()
+    {
+        scash=scash+budget;
+
+        if(scash==budget)
+            cout<<"\n\t No change in the budget\n";
+        else
+        {
+            if(scash>0)
+            {
+                cout<<"\n\t\t Today's profit : "<<scash<<"\n\n";
+            }
+            else if(scash<0)
+            {
+                cout<<"\n\t\t Today's lose : "<<-1*scash<<endl;
+            }
+        }
+    }
+};
+
+int car_insert::counter1 = 0;
+int car_insert::counter2=0;
+double car_insert::scash = 0;
+
+int n=0;
+void fun_insert()//insert function
+{
+    cout << "\n Enter number of cars : ";
+    int n;
+    cin >> n;
+    car_insert arr[n];
+    for (int i = 0; i < n; i++)
+    {
+        string type;
+        int id;
+        double price;
+kt:
+        cout<<" Enter car NO."<<i+1<<" type : ";
+        cin >> type;
+        if(cin.fail())
+        {
+            cout<<"\nType must be letters\n";
+            cin.clear();
+            cin.ignore(100000,'\n');
+            goto kt;
+        }
+ki:
+        cout<<" Enter car NO."<< i+1<<"  id : ";
+        cin>> id;
+        if(cin.fail())
+        {
+            cout<<"\nID must be numbers\n";
+            cin.clear();
+            cin.ignore(100000,'\n');
+            goto ki;
+        }
+kp:
+        cout<<" Enter the car  "<< i+1<<"  price  : ";
+        cin >> price;
+        if(cin.fail())
+        {
+            cout<<"\nPrice must be numbers\n";
+            cin.clear();
+            cin.ignore(100000,'\n');
+            goto kp;
+        }
+        arr[i].set_car(type, id, price);
+    }
+}
+void fun_sold()//sold function
+{
+    cout<<"Enter The number of sold cars : ";
+    int t;
+    cin>>t;
+    sold_car arry[t];
+    for(int i=0; i<t; i++)
+    {
+        cout<<"Enter car NO."<< i+1<<" id : ";
+        double id;
+        cin>>id;
+        cout<<"Enter car NO."<< i+1<<" price : ";
+        double price;
+        cin>>price;
+        arry[i].set_id(id);
+        arry[i].set_price(price);
+    }
+}
+void fun_show()//show function
+{
+    show_data s1;
+    s1.set_data();
+    cout<<"\t\t\n ---------Today's data--------- \n\n";
+    s1.get_car();
+    s1.get_cash();
+
+}
+signed main()
+{
+/*     ios_base::sync_with_stdio(false);
+    cin.tie(NULL);*/
+loop:
+    int c;
+    cout <<"\n****************************************************************************\n";
+    cout <<"********************  Welcome to Ceaser's car gallery  *********************\n";
+    cout <<"****************************************************************************\n";
+cout <<"\n\t 1 - insert new cars info";
+    cout <<"\n\t 2 - insert sold cars info";
+    cout <<"\n\t 3 - show full data";
+cout <<"\n\t 4 - Exit  \n";
+    cout <<"\n Enter the number of the operation : ";
+    cin >> c;
+    switch (c)
+    {
+    case 1:
+    {
+        fun_insert();
+        cout<<" \n To Main menu press 1\n";
+        cout<<" To exit program press any Key \n";
+        cout <<"--> ";
+        int y;
+        cin>>y;
+        if(y==1) goto loop;//return main
+
+        break;
+
+    }
+    case 2:
+    {
+        fun_sold();
+        cout<<" \n To Main menu press 1\n";
+        cout<<" To exit program press any Key \n";
+        cout <<"--> ";
+        int y;
+        cin>>y;
+        if(y==1) goto loop;//return main
+        break;
+
+    }
+    case 3:
+    {
+
+        fun_show();
+        cout<<" \n To Main menu press 1\n";
+        cout<<" To exit program press any Key \n";
+        cout <<"--> ";
+        int y;
+        cin>>y;
+        if(y==1) goto loop;//return main
+        break;
+
+
+
+    }
+    case 4:
+    {
+        exit(0);
+    }
+    default:
+    {
+        cout<<"\n \t ********* Enter a valid operation number *************\n ";
+        cout<<"----------------------------------------------------------------------------\n";
+        goto loop;//return main
+    }
+
+
+    }
+
+
+}
